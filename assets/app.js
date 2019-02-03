@@ -15,6 +15,8 @@ var cards = document.getElementsByClassName('card-grid__card');
 var game_animals = [];
 var game_cards = [];
 
+var lastClicked = -1;
+
 // Make sure we have enough Animals to generate
 // the grid
 if(ANIMALS.length * 2 < cards.length)
@@ -37,7 +39,11 @@ function shuffle(array) {
 }
 
 function onCardClick(e) {
-  console.log("Clicked", e.target.innerText);
+  var code = e.target.getAttribute('data-code');
+  if(code == lastClicked) {
+    alert("yay!!")
+  }
+  lastClicked = code;
 }
 
 // Initate event handlers
@@ -51,14 +57,21 @@ function init() {
 
 // Generate the cards
 function refresh() {
+  // Make a copy of the defined animals to manipulate
+  var animalPool = ANIMALS;
+
   // Choose 5 random animals
   for (var i = 0; i < 5; i++) {
-    var newAnimal = ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
+
+    var newAnimalIndex = Math.floor(Math.random() * animalPool.length);
+    var newAnimal = animalPool[newAnimalIndex];
     game_animals.push(newAnimal);
+    animalPool.splice(newAnimalIndex, 1);
 
     // Also generate the playing cards
-    game_cards.push(newAnimal['name']);
-    game_cards.push(newAnimal['image']);
+    // (`code` is used to check a text/image combonation is correct)
+    game_cards.push({code: i, content: newAnimal['name']});
+    game_cards.push({code: i, content: newAnimal['image']});
   }
 
   // Shuffle the playing cards
@@ -66,7 +79,8 @@ function refresh() {
 
   // Render the playing cards
   for (var i = 0; i < game_cards.length; i++) {
-    cards[i].innerText = game_cards[i];
+    cards[i].setAttribute('data-code', game_cards[i].code);
+    cards[i].innerText = game_cards[i].content;
   }
 }
 
