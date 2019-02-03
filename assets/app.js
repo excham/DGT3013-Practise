@@ -17,10 +17,16 @@ const ANIMALS = [
 // Stores all the cards inside the grid in an array
 var cards = document.getElementsByClassName('card-grid__card');
 
+// Create a reference our playing board
+var playImage = document.getElementsByClassName('play-area__card_image')[0];
+var playName = document.getElementsByClassName('play-area__card_name')[0];
+
+// Game state variables
 var game_animals = [];
 var game_cards = [];
 
-var lastClicked = -1;
+var typeLastClicked,
+    imageLastClicked = -1, nameLastClicked = -1;
 
 // Make sure we have enough Animals to generate
 // the grid
@@ -45,10 +51,33 @@ function shuffle(array) {
 
 function onCardClick(e) {
   var code = e.target.getAttribute('data-code');
-  if(code == lastClicked) {
-    alert("yay!!")
+
+  var isImageCard = !! e.target.getAttribute('src')
+                    || e.target.getAttribute('data-cardType') == 'image'
+
+  if(isImageCard) {
+    playImage.innerHTML = `<img src="${e.target.getAttribute('src')}"/>`
+  } else{
+    playName.innerText = e.target.innerText;
   }
-  lastClicked = code;
+
+  // Very simple win detection, see documentation
+  if(code == nameLastClicked || code == imageLastClicked) {
+    
+  }
+
+  if(isImageCard) {
+    imageLastClicked = code;
+  } else{
+    nameLastClicked = code;
+  }
+
+  typeLastClicked = isImageCard ? 'image' : 'text';
+}
+
+function clearPlayboard() {
+  playImage.innerHTML = ''
+  playName.innerText = '';
 }
 
 // Initate event handlers
@@ -89,9 +118,11 @@ function refresh() {
     cards[i].setAttribute('data-code', game_cards[i].code);
     // If the card is an image card...
     if(game_cards[i].content.indexOf("img:") == 0){
+      cards[i].setAttribute('data-cardType', 'image');
       // ... render the image
       cards[i].innerHTML = `<img src="${game_cards[i].content.substring(4)}" data-code="${game_cards[i].code}"/>`
     } else {
+      cards[i].setAttribute('data-cardType', 'word');
       // ... otherwise just set the text
       cards[i].innerText = game_cards[i].content;
     }
