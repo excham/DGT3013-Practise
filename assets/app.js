@@ -11,9 +11,7 @@ const ANIMALS = [
   {name: "Cow", image: "img:assets/images/cow.jpg"},
   {name: "Chicken", image: "img:assets/images/chicken.jpg"},
   {name: "Snake", image: "img:assets/images/snake.jpg"},
-  {name: "Fish", image: "img:assets/images/fish.jpg"},
-  {name: "Zebra", image: "img:assets/images/zebra.jpg"},
-  {name: "Hippopotamus", image: "img:assets/images/hippopotamus.jpg"},
+  {name: "Fish", image: "img:assets/images/fish.jpg"}
 ]
 
 // Stores all the cards inside the grid in an array
