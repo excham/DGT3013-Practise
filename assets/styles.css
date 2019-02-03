@@ -4,6 +4,12 @@
   border: none;
 }
 
+body {
+  font-family: 'Roboto', sans-serif;
+  color: #fff;
+  background-color: #BBDEFB;
+}
+
 .container {
   margin: auto;
   width: 1250px;
@@ -30,7 +36,7 @@
   display: flex;
   flex-direction: row;
   width: inherit;
-  background-color: red;
+  background-color: #1976D2;
 }
 
 .card-grid__card {
@@ -41,4 +47,9 @@
   padding: 10px;
   border: 1px #000 solid;
   cursor: pointer;
+  transition: all 0.125s ease-in-out;
+}
+
+.card-grid__card:hover {
+  background-color: #0D47A1;
 }
