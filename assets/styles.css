@@ -15,11 +15,23 @@ body {
   width: 1250px;
 }
 
+.header {
+  margin-top: 30px;
+  padding: 10px 10px;
+  width: 220px;
+  background-color: #2196F3;
+
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
 .play-area {
   display: flex;
   align-content: space-between;
   padding: 70px 250px;
   background-color: #2196F3;
+
+  border-top-right-radius: 10px;
 }
 
 .play-area__card {
@@ -32,22 +44,36 @@ body {
   margin-right: 100px;
 }
 
+.card-area {
+  background-color: #1976D2;
+
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
 .card-grid__row {
   display: flex;
   flex-direction: row;
-  width: inherit;
-  background-color: #1976D2;
 }
 
 .card-grid__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   width: 250px;
-  height: 100px;
   margin: 10px;
-  text-align: center;
-  padding: 10px;
-  border: 1px #000 solid;
+  padding: 10px 10px;
+  border: 1px #0D47A1 solid;
+  border-radius: 5px;
   cursor: pointer;
   transition: all 0.125s ease-in-out;
+
+  font-size: 32px;
+}
+
+.card-grid__card img {
+  width: 200px;
+  height: 120px;
 }
 
 .card-grid__card:hover {

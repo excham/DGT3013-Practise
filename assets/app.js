@@ -6,7 +6,14 @@ const ANIMALS = [
   {name: "Bird", image: "img:assets/images/bird.jpg"},
   {name: "Giraffe", image: "img:assets/images/giraffe.jpg"},
   {name: "Elephant", image: "img:assets/images/elephant.jpg"},
-  {name: "Lion", image: "img:assets/images/lion.jpg"}
+  {name: "Lion", image: "img:assets/images/lion.jpg"},
+  {name: "Sheep", image: "img:assets/images/sheep.jpg"},
+  {name: "Cow", image: "img:assets/images/cow.jpg"},
+  {name: "Chicken", image: "img:assets/images/chicken.jpg"},
+  {name: "Snake", image: "img:assets/images/snake.jpg"},
+  {name: "Fish", image: "img:assets/images/fish.jpg"},
+  {name: "Zebra", image: "img:assets/images/zebra.jpg"},
+  {name: "Hippopotamus", image: "img:assets/images/hippopotamus.jpg"},
 ]
 
 // Stores all the cards inside the grid in an array
@@ -65,7 +72,9 @@ function refresh() {
 
     var newAnimalIndex = Math.floor(Math.random() * animalPool.length);
     var newAnimal = animalPool[newAnimalIndex];
+    // Add animal to game
     game_animals.push(newAnimal);
+    // Remove animal from pool
     animalPool.splice(newAnimalIndex, 1);
 
     // Also generate the playing cards
@@ -80,7 +89,14 @@ function refresh() {
   // Render the playing cards
   for (var i = 0; i < game_cards.length; i++) {
     cards[i].setAttribute('data-code', game_cards[i].code);
-    cards[i].innerText = game_cards[i].content;
+    // If the card is an image card...
+    if(game_cards[i].content.indexOf("img:") == 0){
+      // ... render the image
+      cards[i].innerHTML = `<img src="${game_cards[i].content.substring(4)}" data-code="${game_cards[i].code}"/>`
+    } else {
+      // ... otherwise just set the text
+      cards[i].innerText = game_cards[i].content;
+    }
   }
 }
 
