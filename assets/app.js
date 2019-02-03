@@ -36,19 +36,40 @@ function shuffle(array) {
   return array;
 }
 
-for (var i = 0; i < 5; i++) {
-  var newAnimal = ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
-  game_animals.push(newAnimal);
-
-  // Also generate the playing cards
-  game_cards.push(newAnimal['name']);
-  game_cards.push(newAnimal['image']);
+function onCardClick(e) {
+  console.log("Clicked", e.target.innerText);
 }
 
-// Shuffle the playing cards
-game_cards = shuffle(game_cards);
-
-// Render the playing cards
-for (var i = 0; i < game_cards.length; i++) {
-  cards[i].childNodes[1].innerText = game_cards[i];
+// Initate event handlers
+function init() {
+  for (var i = 0; i < cards.length; i++) {
+    cards[i].addEventListener('click', onCardClick);
+  }
+  // Set up the game
+  refresh();
 }
+
+// Generate the cards
+function refresh() {
+  // Choose 5 random animals
+  for (var i = 0; i < 5; i++) {
+    var newAnimal = ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
+    game_animals.push(newAnimal);
+
+    // Also generate the playing cards
+    game_cards.push(newAnimal['name']);
+    game_cards.push(newAnimal['image']);
+  }
+
+  // Shuffle the playing cards
+  game_cards = shuffle(game_cards);
+
+  // Render the playing cards
+  for (var i = 0; i < game_cards.length; i++) {
+    cards[i].innerText = game_cards[i];
+  }
+}
+
+
+// Start the game
+init();
