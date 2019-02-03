@@ -20,6 +20,10 @@ var cards = document.getElementsByClassName('card-grid__card');
 // Create a reference our playing board
 var playImage = document.getElementsByClassName('play-area__card_image')[0];
 var playName = document.getElementsByClassName('play-area__card_name')[0];
+// ... and win modal DOM
+var winModal = document.querySelector('.modal');
+var winModal_name = document.getElementsByClassName('modal__body__animalName')[0];
+var winModal_image = document.getElementsByClassName('modal__body__animalImage')[0];
 
 // Game state variables
 var game_animals = [];
@@ -63,7 +67,7 @@ function onCardClick(e) {
 
   // Very simple win detection, see documentation
   if(code == nameLastClicked || code == imageLastClicked) {
-    
+    win(game_animals[code]);
   }
 
   if(isImageCard) {
@@ -80,11 +84,23 @@ function clearPlayboard() {
   playName.innerText = '';
 }
 
+function closeModal() {
+  winModal.style.display = "none";
+}
+
+function win(animal) {
+  winModal_name.innerText = animal.name;
+  winModal_image.setAttribute('src', animal.image.substring(4));
+  winModal.style.display = "block";
+  console.log("You correctly matched:", animal.name)
+}
+
 // Initate event handlers
 function init() {
   for (var i = 0; i < cards.length; i++) {
     cards[i].addEventListener('click', onCardClick);
   }
+  winModal.addEventListener('click', closeModal);
   // Set up the game
   refresh();
 }
