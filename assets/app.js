@@ -28,7 +28,9 @@ var winModal_image = document.getElementsByClassName('modal__body__animalImage')
 // Game state variables
 var game_animals = [];
 var game_cards = [];
+var matchCount = 0;
 
+// Click tracking
 var typeLastClicked,
     imageLastClicked = -1, nameLastClicked = -1;
 
@@ -56,8 +58,17 @@ function shuffle(array) {
 function onCardClick(e) {
   var code = e.target.getAttribute('data-code');
 
+  if(code == -1) return;
+
   var isImageCard = !! e.target.getAttribute('src')
                     || e.target.getAttribute('data-cardType') == 'image'
+
+
+  // Prevent player from clicking the same card twice
+  if((isImageCard && typeLastClicked == 'image' && code == imageLastClicked)
+  || (!isImageCard && typeLastClicked == 'text' && code == nameLastClicked)) {
+    return;
+  }
 
   if(isImageCard) {
     playImage.innerHTML = `<img src="${e.target.getAttribute('src')}"/>`
@@ -67,7 +78,8 @@ function onCardClick(e) {
 
   // Very simple win detection, see documentation
   if(code == nameLastClicked || code == imageLastClicked) {
-    win(game_animals[code]);
+    clearPlayboard();
+    win(code);
   }
 
   if(isImageCard) {
@@ -88,11 +100,29 @@ function closeModal() {
   winModal.style.display = "none";
 }
 
-function win(animal) {
+function win(code) {
+  var animal = game_animals[code];
+
   winModal_name.innerText = animal.name;
   winModal_image.setAttribute('src', animal.image.substring(4));
   winModal.style.display = "block";
+
+  setMatched(code);
+
+  if(++matchCount == cards.length / 2) {
+    refresh();
+  } else {
+    render();
+  }
+
   console.log("You correctly matched:", animal.name)
+}
+
+function setMatched(code) {
+  for (var i = 0; i < game_cards.length; i++) {
+    if(game_cards[i].code == code)
+      game_cards[i].matched = true;
+  }
 }
 
 // Initate event handlers
@@ -107,6 +137,11 @@ function init() {
 
 // Generate the cards
 function refresh() {
+  // Clear variables from any previous rounds
+  game_cards = [];
+  imageLastClicked = -1;
+  nameLastClicked = -1;
+
   // Make a copy of the defined animals to manipulate
   var animalPool = ANIMALS;
 
@@ -130,7 +165,19 @@ function refresh() {
   game_cards = shuffle(game_cards);
 
   // Render the playing cards
+  render();
+}
+
+function render() {
+  // Render the playing cards
   for (var i = 0; i < game_cards.length; i++) {
+    // If the card has been matched, ignore it
+    if(game_cards[i].hasOwnProperty('matched')){
+      cards[i].setAttribute('data-code', -1);
+      cards[i].innerHTML = "";
+      continue;
+    }
+
     cards[i].setAttribute('data-code', game_cards[i].code);
     // If the card is an image card...
     if(game_cards[i].content.indexOf("img:") == 0){
